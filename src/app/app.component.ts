@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlacesService } from './service/places.service';
 import { default as placesJsonData } from '../assets/data/Naturupplevelser_Karlskrona.json';
+import {Http} from '@angular/http';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/map'
 
@@ -14,13 +15,13 @@ export class AppComponent implements OnInit{
   lat: number = 56.16156;
   lng: number = 15.58661;
   arr:any[];
-  items:any[];
-  constructor() {
-
+  items:any;
+  min:any;
+  constructor(private http:Http) {
+    this.getData();
   }
 
  ngOnInit() {
-   this.getData();
    // this.arr = (<any>placesJsonData.features);
    //this.arr = JSON.parse(placesJsonData);
   // console.log(angular.fromjson(placesJsonData));
@@ -32,12 +33,13 @@ export class AppComponent implements OnInit{
   }
 
   getData(){
-   placesJsonData.map(res=>res.json()).subscribe(data => {
-   this.items = data;
-   console.log(this.items);
-   for(var i = 0; i < this.items.length; i++){
-     console.log(this.items[i]);
-   }
- });
- }
+  this.http.get('https://opendata.arcgis.com/datasets/6ab539c274af433e9d26c7a6e8641823_0.geojson').map(res=>res.json()).subscribe(data => {
+  this.items = data;
+  console.log(this.items);
+  for(var i = 0; i < this.items.features.length; i++){
+    this.min = this.items.features[i].geometry;
+    console.log(this.min);
+  }
+  });
+}
 }
