@@ -3,6 +3,7 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
+//import {  HttpClient } from '@angular/common/http';
 
 import { PlacesService } from './service/places.service';
 
@@ -17,7 +18,9 @@ import { AgmCoreModule } from '@agm/core';
       apiKey: 'AIzaSyAlbVJ7joRQ41CoPJKbO55MKaK3yMLXlMU'
     })
   ],
-  providers: [PlacesService],
+  providers: [
+    PlacesService
+  ],
   declarations: [ AppComponent ],
   bootstrap: [ AppComponent ]
 })

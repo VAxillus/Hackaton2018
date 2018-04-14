@@ -12,7 +12,7 @@ export class PlacesService {
   }
 
   public getJSON(): Observable<any> {
-    return this.http.get("./assets/data/Naturupplevelser_Karlskrona.json")
+    return this.http.get("./assets/data/Naturupplevelser_Karlskrona.geojson")
   }
 
 }
