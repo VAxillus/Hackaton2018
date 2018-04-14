@@ -1,10 +1,54 @@
 <h1>{{ title }}</h1>
+<!--
+<br/>
+<div class="container">
+  <div class="row">
+       <div class="col-lg-12">
+     <div class="button-group">
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <span class="caret"></span></button>
+<ul class="dropdown-menu">
+  <li><a href="#" class="small" data-value="option1" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 1</a></li>
+  <li><a href="#" class="small" data-value="option2" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 2</a></li>
+  <li><a href="#" class="small" data-value="option3" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 3</a></li>
+  <li><a href="#" class="small" data-value="option4" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 4</a></li>
+  <li><a href="#" class="small" data-value="option5" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 5</a></li>
+  <li><a href="#" class="small" data-value="option6" tabIndex="-1"><input type="checkbox"/>&nbsp;Option 6</a></li>
+</ul>
+  </div>
+</div>
+  </div>
+</div>
+/-->
+<!-- <select ng-model="selectedPlace">
+<option *ngFor="let place of places" value="{{place.name}}"> {{ place.name}}</option>
+</select> /-->
 
+<!-- <h1>You selected: {{ selectedPlace }}</h1>
+<ul>
+  <li *ngFor="let place of places">
+      {{ place.name }}
+  </li>
+</ul> /-->
+<form>
+  <div class="form-group">
+<select multiple name="selectedPlace" ngModel>
+      <option *ngFor="let place of places" [ngValue]="place">
+           {{ place.name }}
+      </option>
+</select>
+
+<input type="checkbox" ng-checked="all"> Cykelparkering
+<input type="checkbox" ng-checked="all"> Cykelpumpar
+</div>
+</form>
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
-<agm-map id="mapid" [latitude]="lat" [longitude]="lng">
-  <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+
+<agm-map>
+ <agm-marker [latitude]="lat" [longitude]="lng" *ngFor="let place of bicycleParkingSpots; let i=index">
+   <agm-info-window>
+     {{place.id}}
+   </agm-info-window>
+ </agm-marker>
+ <agm-direction *ngIf="directionReq" [travelMode]="directionReq.travelMode" [origin]="directionReq.origin" [waypoints]="waypointReqs" [destination]="directionReq.destination"></agm-direction>
 </agm-map>
-
-
-{{min|json}}

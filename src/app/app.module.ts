@@ -7,7 +7,8 @@ import {HttpModule} from '@angular/http';
 
 import { PlacesService } from './service/places.service';
 
-import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule} from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { AgmCoreModule } from '@agm/core';
     CommonModule,
     FormsModule,
     HttpModule,
+    AgmDirectionModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAlbVJ7joRQ41CoPJKbO55MKaK3yMLXlMU'
     })
