@@ -56,7 +56,7 @@ export interface DirectionReq {
   styleUrls: ['app.component.css'],
 })
 export class AppComponent implements OnInit{
-  title: string = 'GeedN';
+  title: string = 'Hackaton 2018';
   lat: number;
   lng: number;
   items: any;
