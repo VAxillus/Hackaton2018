@@ -31,7 +31,7 @@
 </ul> /-->
 <form>
   <div class="form-group">
-<select multiple name="selectedPlace" ngModel>
+<select multiple [(ngModel)]="selectedPlace" name="selectedPlace">
       <option *ngFor="let place of places" [ngValue]="place">
            {{ place.name }}
       </option>
@@ -44,11 +44,14 @@
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
 
-<agm-map>
- <agm-marker [latitude]="lat" [longitude]="lng" *ngFor="let place of bicycleParkingSpots; let i=index">
+<agm-map [latitude]="userCoords.location.lat" [longitude]="userCoords.location.lng">
+ <agm-marker [latitude]="place.coords[0]" [longitude]="place.coords[1]" *ngFor="let place of places; let i=index">
    <agm-info-window>
-     {{place.id}}
+     {{place.description}}
    </agm-info-window>
  </agm-marker>
- <agm-direction *ngIf="directionReq" [travelMode]="directionReq.travelMode" [origin]="directionReq.origin" [waypoints]="waypointReqs" [destination]="directionReq.destination"></agm-direction>
+ <agm-direction *ngIf="directionReq" [optimizeWaypoints]="true" [travelMode]="directionReq.travelMode" [origin]="directionReq.origin" [waypoints]="waypointReqs" [destination]="directionReq.destination"></agm-direction>
 </agm-map>
+
+<button type="button" (click)="calculateRoute()">Calculate Route</button>
+<button type="button" (click)="reset()">Reset</button>

@@ -61,6 +61,8 @@ export class AppComponent implements OnInit{
   lng: number;
   items: any;
   coords: any;
+  userCoords:Waypoint;
+  selectedPlace: Places[];
   places: Places[] = new Array();
   bicycleParkingSpots: BicycleParkingSpot[] = new Array();
   bicyclePumps: BicyclePumps[] = new Array();
@@ -68,6 +70,12 @@ export class AppComponent implements OnInit{
   waypointReqs: Waypoint[] = new Array();
 
   constructor(private http:Http) {
+    this.userCoords = {
+      location: {
+      lat: 56.18314357,
+      lng: 15.59350491
+      }
+    };
     this.getData();
   }
 
@@ -96,13 +104,11 @@ export class AppComponent implements OnInit{
       coords: [this.lat, this.lng],
       description: this.items.features[i].properties.Caption
     });
-    console.log(this.places[i]);
   }
   });
   this.http.get('https://opendata.arcgis.com/datasets/6ab539c274af433e9d26c7a6e8641823_0.geojson').map(res=>res.json()).subscribe(bicycleParkingData => {
 
    this.items = bicycleParkingData;
-   console.log(this.items);
    for(var i = 0; i < this.items.features.length; i++)
    {
      this.bicycleParkingSpots.push(
@@ -114,17 +120,6 @@ export class AppComponent implements OnInit{
        }
      );
    }
-   this.directionReq = {
-    origin: { lat: this.bicycleParkingSpots[0].lat, lng: this.bicycleParkingSpots[0].lng},
-    destination: {lat: this.bicycleParkingSpots[40].lat, lng: this.bicycleParkingSpots[40].lng},
-    travelMode: "BICYCLING"
-  };
-  this.waypointReqs.push({
-    location: {
-      lat: this.items.features[15].geometry.coordinates[1],
-      lng: this.items.features[15].geometry.coordinates[0]
-    }
-    });
 });
 
 this.http.get('https://opendata.arcgis.com/datasets/1c1b09939f2b490fb16f8866c50b9a9f_0.geojson').map(res=>res.json()).subscribe(data => {
@@ -139,10 +134,36 @@ this.http.get('https://opendata.arcgis.com/datasets/1c1b09939f2b490fb16f8866c50b
        location: this.items.features[i].properties.Plats
      }
    );
-    console.log(this.bicyclePumps[i]);
  }
 });
 }
 
+calculateRoute(){
+  this.waypointReqs = new Array();
+
+  for(var i = 0; i < this.selectedPlace.length; i++)
+  {
+    this.waypointReqs.push({
+      location: {
+        lat: this.selectedPlace[i].coords[1],
+        lng: this.selectedPlace[i].coords[0]
+      }
+  });
+  }
+  console.log(this.waypointReqs);
+
+  this.directionReq = {
+   origin: { lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
+   destination: { lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
+   travelMode: "BICYCLING"
+    };
+  console.log(this.directionReq);
+}
+
+reset()
+{
+  this.waypointReqs = new Array();
+  this.directionReq = undefined;
+}
 
 }
