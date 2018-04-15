@@ -68,6 +68,8 @@ export class AppComponent implements OnInit{
   bicyclePumps: BicyclePumps[] = new Array();
   directionReq: DirectionReq;
   waypointReqs: Waypoint[] = new Array();
+  isPumpChecked:boolean = false;
+  isParkingChecked:boolean = false;
 
   constructor(private http:Http) {
     this.userCoords = {
@@ -105,7 +107,6 @@ export class AppComponent implements OnInit{
       description: this.items.features[i].properties.Caption
     });
   }
-  console.log(this.items);
   });
 
   this.http.get('https://opendata.arcgis.com/datasets/6ab539c274af433e9d26c7a6e8641823_0.geojson').map(res=>res.json()).subscribe(bicycleParkingData => {
@@ -137,51 +138,28 @@ this.http.get('https://opendata.arcgis.com/datasets/1c1b09939f2b490fb16f8866c50b
      }
    );
  }
- console.log(this.items);
 });
 
 }
 
 calculateRoute(){
+    this.directionReq = {
+         origin: { lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
+         destination: {lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
+         travelMode: "BICYCLING"
+       };
 
-  this.directionReq = {
-       origin: { lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
-       destination: {lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
-       travelMode: "BICYCLING"
-     };
+       for(var i = 0; i < this.selectedPlace.length; i++)
+       {
+       this.waypointReqs.push({
+         location: {
+           lat: this.selectedPlace[i].coords[0],
+           lng: this.selectedPlace[i].coords[1]
+         }
+         });
 
-     for(var i = 0; i < this.selectedPlace.length; i++)
-     {
-     this.waypointReqs.push({
-       location: {
-         lat: this.selectedPlace[i].coords[0],
-         lng: this.selectedPlace[i].coords[1]
        }
-       });
-     }
-     console.log(this.directionReq);
-     console.log(this.waypointReqs);
-
-
-  /*this.waypointReqs = new Array();
-  for(var i = 0; i < this.selectedPlace.length; i++)
-  {
-    this.waypointReqs.push({
-      location: {
-        lat: this.selectedPlace[i].coords[1],
-        lng: this.selectedPlace[i].coords[0]
-      }
-  });
-  }
-  console.log(this.waypointReqs);
-  console.log(this.userCoords.location);
-  this.directionReq = {
-   origin: { lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
-   destination: { lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
-   travelMode: "BICYCLING"
-    };
-  console.log(this.directionReq);*/
-}
+ }
 
 reset()
 {
@@ -189,8 +167,19 @@ reset()
   this.directionReq = undefined;
   this.selectedPlace = undefined;
 }
+
 dirChange(event:any){
   console.log(event);
+  this.selectedPlace = undefined;
   // You can do anything.
 }
+
+checkParking(event:any){
+  this.isParkingChecked = event.target.checked;
+}
+
+checkPump(event:any){
+  this.isPumpChecked = event.target.checked;
+}
+
 }
