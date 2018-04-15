@@ -105,7 +105,9 @@ export class AppComponent implements OnInit{
       description: this.items.features[i].properties.Caption
     });
   }
+  console.log(this.items);
   });
+
   this.http.get('https://opendata.arcgis.com/datasets/6ab539c274af433e9d26c7a6e8641823_0.geojson').map(res=>res.json()).subscribe(bicycleParkingData => {
 
    this.items = bicycleParkingData;
@@ -120,7 +122,7 @@ export class AppComponent implements OnInit{
        }
      );
    }
-});
+  });
 
 this.http.get('https://opendata.arcgis.com/datasets/1c1b09939f2b490fb16f8866c50b9a9f_0.geojson').map(res=>res.json()).subscribe(data => {
 
@@ -135,12 +137,33 @@ this.http.get('https://opendata.arcgis.com/datasets/1c1b09939f2b490fb16f8866c50b
      }
    );
  }
+ console.log(this.items);
 });
+
 }
 
 calculateRoute(){
-  this.waypointReqs = new Array();
 
+  this.directionReq = {
+       origin: { lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
+       destination: {lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
+       travelMode: "BICYCLING"
+     };
+
+     for(var i = 0; i < this.selectedPlace.length; i++)
+     {
+     this.waypointReqs.push({
+       location: {
+         lat: this.selectedPlace[i].coords[0],
+         lng: this.selectedPlace[i].coords[1]
+       }
+       });
+     }
+     console.log(this.directionReq);
+     console.log(this.waypointReqs);
+
+
+  /*this.waypointReqs = new Array();
   for(var i = 0; i < this.selectedPlace.length; i++)
   {
     this.waypointReqs.push({
@@ -151,19 +174,23 @@ calculateRoute(){
   });
   }
   console.log(this.waypointReqs);
-
+  console.log(this.userCoords.location);
   this.directionReq = {
    origin: { lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
    destination: { lat: this.userCoords.location.lat, lng: this.userCoords.location.lng},
    travelMode: "BICYCLING"
     };
-  console.log(this.directionReq);
+  console.log(this.directionReq);*/
 }
 
 reset()
 {
   this.waypointReqs = new Array();
   this.directionReq = undefined;
+  this.selectedPlace = undefined;
 }
-
+dirChange(event:any){
+  console.log(event);
+  // You can do anything.
+}
 }

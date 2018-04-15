@@ -16,10 +16,10 @@ import { AgmDirectionModule } from 'agm-direction';
     CommonModule,
     FormsModule,
     HttpModule,
-    AgmDirectionModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAlbVJ7joRQ41CoPJKbO55MKaK3yMLXlMU'
-    })
+    }),
+    AgmDirectionModule
   ],
   providers: [
     PlacesService
